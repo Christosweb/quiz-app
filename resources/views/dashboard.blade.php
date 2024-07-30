@@ -28,12 +28,19 @@
                     <form class="bg-light shadow-lg"
                         action="{{$questions->lastPage() > $questions->currentPage() ? url($questions->nextPageUrl()) : null}}"
                         method="POST" id="myForm">
-                        <div class="progress text-center">
-                            <div class="progress-bar text-center" data-current-page="{{$questions->currentPage()}}" data-last-page="{{$questions->lastPage()}}" id="progress-bar">{{100/$questions->lastPage() * $questions->currentPage()}}%</div>
+                        <div class="d-flex justify-content-center align-items-center p-3">
+                            <div class="text-mute me-2">Progress:</div>
+                            <div class="progress w-50 align-middle">
+                                <div class="progress-bar text-center align-self-center" data-current-page="{{$questions->currentPage()}}" data-last-page="{{$questions->lastPage()}}" id="progress-bar">{{100/$questions->lastPage() * $questions->currentPage()}}%</div>
+                            </div>
+                            <div class="ms-3">
+                                Question {{$questions->currentPage()}} out of {{$questions->lastPage()}}
+                            </div>
                         </div>
+                        
 
                         @foreach ($questions as $question )
-                        <h3 class="text-center text-capitalize pt-3 mb-5">{{ $question->test}}</h3>
+                        <h3 class="text-center text-capitalize pt-0 mb-5">{{ $question->test}}</h3>
                         @foreach ($question->options->shuffle() as $option )
                         @csrf
                         <div class="card">

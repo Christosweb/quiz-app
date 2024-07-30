@@ -17,44 +17,26 @@ use App\Models\Answer;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
-Route::get('/', function () {
-    $questions = Question::with('options')->paginate(1);
-    $answers = new Answer();
-    $answer = $answers->retrieveAnswer();
-    return view('dashboard', ['questions' => $questions, 'answer' => $answer]);
-})->middleware('auth');
-
-Route::post('/', function (Request $request) {
-    // $page = $request->query('page');
-    $questions = Question::with('options')->paginate(1);
-
-    $answers = new Answer();
-    $answer = $answers->retrieveAnswer();
-    return view('dashboard', ['questions' => $questions, 'answer' => $answer]); 
-});
-Route::put('/', [AnswerController::class, 'putAnswer'] );
-
-
+Route::get('/signup', function () {
+    return view('signup');
+})->name('signup');
 
 Route::get('/signin', function () {
     return view('signin');
 })->name('login');
 
-Route::post('/signin', [UserController::class, 'signin'])->name('login.signin');
+Route::controller(UserController::class)->group(function(){
+    Route::get('/', [UserController::class, 'index'])->middleware('auth');
+    Route::post('/', [UserController::class, 'showNextQuestion']);
+    Route::post('/signin', [UserController::class, 'signin'])->name('login.signin');
+    Route::post('/signup',[UserController::class, 'signup'] )->name('register.signup');
+    Route::get('/final',[UserController::class, 'submitQuestion'] );
 
-
-Route::get('/signup', function () {
-    return view('signup');
-})->name('signup');
-
-Route::post('/signup',[UserController::class, 'signup'] )->name('register.signup');
-
-Route::get('/final', function(Answer $answer){
-    $question = Question::all()->count();
-    $answers = $answer->retrieveAnswer()->count();
-    return view('final', ['answers' => $answers, 'question' => $question]);
 });
+
+
+Route::put('/', [AnswerController::class, 'putAnswer'] );
+
+
 
 
