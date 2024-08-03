@@ -46,21 +46,33 @@ class Answer extends Model
         Answer::updateOrCreate(
         [  
            'question_id' => $user_answer['question_id'],
+            'user_id' => $user_answer['user_id'],
            
         ],
         [
             'user_id'  =>$user_answer['user_id'],
             'question_id' => $user_answer['question_id'],
             'option_id' => $user_answer['option_id'],
-            'is_correct' =>$user_answer['is_correct']
+            'is_correct' =>$user_answer['is_correct'],
+            'exam_id' => session('exam_id')
          ]
     );
     }
 
     public function retrieveAnswer()
     {
-        $user_id = Auth::user()->id;
-      return  Answer::where('user_id', $user_id)->get();
+    
+      return  Answer::where('exam_id', session('exam_id'))->get();
 
     }
+
+
+    public function getScore()
+    {
+        $user_id = Auth::user()->id;
+        return  Answer::where('user_id', $user_id)
+                        ->where('exam_id', session('exam_id'))
+                        ->where('is_correct', 1)
+                        ->count();
+    }                   
 }

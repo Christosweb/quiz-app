@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('completes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(\App\Models\User::class);
-            $table->foreignIdFor(\App\Models\Option::class);
-            $table->foreignIdFor(\App\Models\Question::class);
-            $table->timestamps();
+        Schema::table('answers', function (Blueprint $table) {
+            //
+            $table->string('exam_id');
         });
     }
 
@@ -29,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('completes');
+        Schema::table('answers', function (Blueprint $table) {
+            //
+        });
     }
 };

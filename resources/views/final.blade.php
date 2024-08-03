@@ -18,7 +18,8 @@
               <h3 class="mb-3">completed</h3>
               <h3 class="mb-3">{{ $answers}}/{{$question}}</h3>
               <h3 class="mb-3">Questions</h3>
-              <button class="btn btn-primary mb-5" id="score">view your score</button>
+              
+              <a href="{{ route('score.showScore')}}" class="btn btn-primary mb-5" id="score">view your score</a>
         </div>
     </div>
 

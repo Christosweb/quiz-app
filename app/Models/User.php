@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -20,11 +21,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded =[];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -67,4 +64,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Answer::class);
     }
+
+    public function profile(){
+     return User::where('id', Auth::user()->id)->get(['name', 'email']);
+    }
+    
+
 }

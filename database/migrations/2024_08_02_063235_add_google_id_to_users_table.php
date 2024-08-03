@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('completes', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
-            $table->boolean('is_correct');
+            $table->string('google_id')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('completes', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
     }

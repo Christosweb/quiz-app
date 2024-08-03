@@ -16,6 +16,17 @@
         <div>
             <h3 class="text-light">Quiz App</h3>
         </div>
+        <!-- dropdown start -->
+        <div class="dropdown me-5">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ auth()->user()->name}}
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="{{ route('profile.profileIndex') }}">Profile</a></li>
+    <li><a class="dropdown-item" href="{{ route('logout')}}">Log Out</a></li>
+  </ul>
+</div>
+        <!-- dropdown end -->
     </header>
 
     <div class="container-fluid">
@@ -34,7 +45,7 @@
                                 <div class="progress-bar text-center align-self-center" data-current-page="{{$questions->currentPage()}}" data-last-page="{{$questions->lastPage()}}" id="progress-bar">{{100/$questions->lastPage() * $questions->currentPage()}}%</div>
                             </div>
                             <div class="ms-3">
-                                Question {{$questions->currentPage()}} out of {{$questions->lastPage()}}
+                                Question {{$questions->currentPage()}} out of {{ $questions->lastPage() }}
                             </div>
                         </div>
                         
@@ -75,6 +86,7 @@
     </div>
 
     <script src="{{asset('js/custom.js')}}"></script>
+    <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
 </body>
 
 </html>

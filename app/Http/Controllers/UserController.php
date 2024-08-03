@@ -6,9 +6,10 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Models\Question;
 use App\Models\Answer;
-use App\Models\Complete;
+
 
 class UserController extends Controller
 {
@@ -27,7 +28,7 @@ class UserController extends Controller
         
     }
 
-    public function signin(Request $request, User $user): RedirectResponse
+    public function signin(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
             'email'=> ['required', 'email'],
@@ -39,6 +40,9 @@ class UserController extends Controller
 
          if(Auth::attempt($credentials, $remember)){
             $request->session()->regenerate();
+
+            //the session below is to persist user chosen answer
+            session(['exam_id'=> Str::random(40)]);
 
             return redirect()->intended('/');
          }
@@ -65,11 +69,28 @@ class UserController extends Controller
     return view('dashboard', ['questions' => $questions, 'answer' => $answer]); 
    }
 
-   public function submitQuestion(Answer $answer, Complete $complete)
+   public function submitQuestion(Answer $answer)
    {
       $question = Question::all()->count();
       $answers = $answer->retrieveAnswer()->count();
       return view('final', ['answers' => $answers, 'question' => $question]);
-   //   return $complete->saveAnswer();
+   
+   }
+
+   public function showScore(Answer $answer)
+   {  
+      $question = Question::all()->count();
+      $answer = $answer->getScore();
+      $answer_in_percent = 100 / $question * $answer ;
+      request()->session()->put(['exam_id'=>Str::random(40)]);
+      
+      return view('score', ['score'=>$answer_in_percent]);
+   }
+
+   public function profileIndex(User $user)
+   {
+       $profile = $user->profile();
+       
+       return view('profile', ['profiles' => $profile]);
    }
 }

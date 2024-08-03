@@ -19,7 +19,8 @@ class AnswerController extends Controller
         'user_id' => $user_id,
         'question_id' => $request->question_id,
         'option_id' => $request->user_option_id,
-        'is_correct' => $request->is_correct
+        'is_correct' => $request->is_correct,
+        'exam_id' => session('exam_id')
        ];
        
        $answer->createAnswer($user_answer);
