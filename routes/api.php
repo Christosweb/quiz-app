@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Question;
+use App\Http\Resources\QuestionsResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get( '/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get( '/questions', function (){
+         $questions = Question::with('options')->paginate(1);
+         return new QuestionsResource($questions);
 });
